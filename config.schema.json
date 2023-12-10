@@ -1,15 +1,36 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "Dirigera",
   "pluginType": "platform",
   "singular": true,
   "schema": {
     "type": "object",
     "properties": {
-      "name": {
-        "title": "Name",
-        "type": "string",
-        "required": true,
-        "default": "Example Dynamic Platform"
+      "hubs": {
+        "type": "array",
+        "title": "DIRIGERA Hubs",
+        "items": {
+          "title": "Hub",
+          "type": "object",
+          "properties": {
+            "host": {
+              "title": "Host / IP",
+              "type": "string",
+              "required": true,
+              "format": "hostname"
+            },
+            "token": {
+              "title": "Authentication Token",
+              "type": "string",
+              "required": false
+            },
+            "name": {
+              "title": "Name",
+              "type": "string",
+              "required": false,
+              "minLength": 1
+            }
+          }
+        }
       }
     }
   }
