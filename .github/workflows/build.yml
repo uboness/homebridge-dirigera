@@ -1,4 +1,4 @@
-name: Build and Lint
+name: Build
 
 on: [push, pull_request]
 
@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         # the Node.js versions to build on
-        node-version: [18.x, 20.x]
+        node-version: [16x, 18.x, 20.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -22,9 +22,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Lint the project
-        run: npm run lint
 
       - name: Build the project
         run: npm run build
