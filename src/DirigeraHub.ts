@@ -5,7 +5,6 @@ import { Availability } from './Availability.js';
 import { clearTimeout } from 'timers';
 import { ContextLogger, ILogger } from './Logger.js';
 import { isNil } from './common.js';
-import { Rest } from './Rest.js';
 
 type DirigeraClient = Awaited<ReturnType<typeof createDirigeraClient>>;
 
@@ -45,7 +44,7 @@ export class DirigeraHub {
     readonly name: string;
     readonly config: DirigeraHub.Config;
     readonly logger: ILogger;
-    private readonly rest: Rest;
+    // private readonly rest: Rest;
 
     private readonly info: DirigeraHub.Info;
     private readonly client: DirigeraClient;
@@ -60,14 +59,6 @@ export class DirigeraHub {
         this.info = info;
         this.client = client;
         this.logger = new ContextLogger(logger, this.name);
-        this.rest = new Rest(`https://${this.config.host}:8443/v1`, {
-            logger: this.logger,
-            headers: {
-                'Authorization': `Bearer ${this.config.token}`,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
         this.availability.on('change', (available, error) => {
             this.emitter.emit('availability', { available, error: error && `${error}` });
         });
@@ -133,10 +124,19 @@ export class DirigeraHub {
     }
 
     async identifyDevice(id: string, period: number = 5): Promise<void> {
-        const resp = await this.rest.put(`/devices/${id}/identify`, {
-            data: { period }
-        });
-        if (resp.status !== 202) {
+        const { got } = await import('got');
+        const resp = await got.put(`https://${this.config.host}:8443/v1/devices/${id}/identify`, {
+            headers: {
+                'Authorization': `Bearer ${this.config.token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            json: { period },
+            https: {
+                rejectUnauthorized: false
+            }
+        })
+        if (resp.statusCode !== 202) {
             this.logger.error(`Failed to identify device [${id}]. ${resp.statusMessage}`);
         }
     }

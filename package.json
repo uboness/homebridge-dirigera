@@ -27,10 +27,11 @@
     "homebridge-plugin"
   ],
   "dependencies": {
-    "dirigera": "^0.11.6"
+    "dirigera": "^0.11.6",
+    "got": "^13.0.0"
   },
   "devDependencies": {
-    "@types/node": "^18.16.20",
+    "@types/node": "^18.18.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.45.0",
