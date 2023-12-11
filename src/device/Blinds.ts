@@ -1,5 +1,5 @@
 import { DirigeraHub } from '../DirigeraHub.js';
-import { PlatformAccessory } from 'homebridge';
+import { PlatformAccessory, Service } from 'homebridge';
 import { Device } from 'dirigera';
 import { DirigeraPlatform } from '../DirigeraPlatform.js';
 import { BlindsAttributes } from 'dirigera/dist/src/types/device/Blinds.js';
@@ -15,11 +15,14 @@ export class Blinds extends DirigeraDevice<BlindsAttributes> {
         return new Blinds(platform, hub, accessory, device);
     }
 
+    private readonly battery?: Service;
+
     private constructor(platform: DirigeraPlatform, hub: DirigeraHub, accessory: PlatformAccessory, device: Device) {
         super(platform, hub, accessory, device, accessory.getService(platform.Service.WindowCovering) ?? accessory.addService(platform.Service.WindowCovering));
 
         if (isNumber(device.attributes.batteryPercentage)) {
-            this.service.getCharacteristic(platform.Characteristic.BatteryLevel)
+            this.battery = accessory.getService(platform.Service.Battery) ?? accessory.addService(platform.Service.Battery);
+            this.battery.getCharacteristic(platform.Characteristic.BatteryLevel)
                 .setValue(device.attributes.batteryPercentage)
                 .onGet(() => this.device.attributes.batteryPercentage as number);
         }
@@ -53,9 +56,9 @@ export class Blinds extends DirigeraDevice<BlindsAttributes> {
     }
 
     update(attributes: BlindsAttributes) {
-        if (isNumber(attributes.batteryPercentage)) {
+        if (isNumber(attributes.batteryPercentage) && this.battery) {
             this.device.attributes.batteryPercentage = attributes.batteryPercentage;
-            this.service.updateCharacteristic(this.platform.Characteristic.BatteryLevel, this.device.attributes.batteryPercentage);
+            this.battery.updateCharacteristic(this.platform.Characteristic.BatteryLevel, this.device.attributes.batteryPercentage);
         }
         if (isNumber(attributes.blindsTargetLevel)) {
             this.device.attributes.blindsTargetLevel = 100 - <number>attributes.blindsTargetLevel;
