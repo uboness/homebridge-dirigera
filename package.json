@@ -1,6 +1,10 @@
 {
   "name": "@uboness/homebridge-dirigera",
   "version": "0.1.1",
+  "author": "uboness",
+  "publishConfig": {
+    "@uboness:registry": "https://registry.npmjs.org "
+  },
   "displayName": "Homebridge DIRIGERA",
   "description": "IKEA DIRIGERA Homebridge Plugin",
   "license": "Apache-2.0",
