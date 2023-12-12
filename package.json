@@ -1,6 +1,6 @@
 {
   "name": "@uboness/homebridge-dirigera",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "author": "uboness",
   "publishConfig": {
     "@uboness:registry": "https://registry.npmjs.org "
