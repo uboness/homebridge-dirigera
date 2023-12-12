@@ -34,7 +34,8 @@
     "LICENSE",
     "README.md",
     "CHANGELOG.md",
-    "dist"
+    "dist",
+    "config.schema.json"
   ],
   "scripts": {
     "watch": "npm run build && tsc -w",
