@@ -1,10 +1,12 @@
 {
-  "private": false,
+  "name": "@uboness/homebridge-dirigera",
+  "version": "0.1.1",
   "displayName": "Homebridge DIRIGERA",
-  "name": "homebridge-dirigera",
-  "version": "0.1.0",
   "description": "IKEA DIRIGERA Homebridge Plugin",
   "license": "Apache-2.0",
+  "keywords": [
+    "homebridge-plugin"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/uboness/homebridge-dirigera"
@@ -16,16 +18,30 @@
     "node": "^18.17.0 || ^20.9.0",
     "homebridge": "^1.6.0"
   },
-  "main": "dist/index.js",
-  "scripts": {
-    "lint": "eslint src/**.ts --max-warnings=0",
-    "watch": "npm run build && npm link && nodemon",
-    "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "npm run build"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
-  "keywords": [
-    "homebridge-plugin"
+  "main": "dist/index.js",
+  "files": [
+    "tsconfig.json",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "dist"
   ],
+  "scripts": {
+    "watch": "npm run build && tsc -w",
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run build",
+    "release:bump": "commit-and-tag-version",
+    "release:postbump": "npm run release:push && npm run release:publish",
+    "release:push": "git push --follow-tags",
+    "release:publish": "npm publish",
+    "release": "npm run release:bump && npm run release:push && npm run release:publish"
+  },
   "dependencies": {
     "dirigera": "^0.11.6",
     "got": "^13.0.0"
@@ -34,6 +50,7 @@
     "@types/node": "^18.18.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "commit-and-tag-version": "^12.0.0",
     "eslint": "^8.45.0",
     "homebridge": "^1.6.0",
     "nodemon": "^2.0.22",
