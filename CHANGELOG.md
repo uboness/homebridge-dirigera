@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.11](https://github.com/uboness/homebridge-dirigera/compare/v0.1.10...v0.1.11) (2023-12-12)
+
+
+### Bug Fixes
+
+* **schema:** added missing config schema file ([25a1100](https://github.com/uboness/homebridge-dirigera/commit/25a1100eae5b9a42ae35ecea0c709f5b7dcde879))
+
 ## [0.1.10](https://github.com/uboness/homebridge-dirigera/compare/v0.1.9...v0.1.10) (2023-12-12)
 
 ## [0.1.9](https://github.com/uboness/homebridge-dirigera/compare/v0.1.8...v0.1.9) (2023-12-12)
