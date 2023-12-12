@@ -1,6 +1,6 @@
 {
   "name": "@uboness/homebridge-dirigera",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "uboness",
   "publishConfig": {
     "@uboness:registry": "https://registry.npmjs.org "
@@ -43,7 +43,7 @@
     "release:bump": "commit-and-tag-version",
     "release:postbump": "npm run release:push && npm run release:publish",
     "release:push": "git push --follow-tags",
-    "release:publish": "npm publish",
+    "release:publish": "npm publish --access public",
     "release": "npm run release:bump && npm run release:push && npm run release:publish"
   },
   "dependencies": {
