@@ -6,6 +6,8 @@
 
 # Homebridge Plugin for IKEA DIRIGERA Hub
 
+### !! Experimental !!
+
 </span>
 
 Currently supports the following device types:
