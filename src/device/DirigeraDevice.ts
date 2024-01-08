@@ -62,7 +62,7 @@ export abstract class DirigeraDevice<Attrs extends CommonDeviceAttributes = Comm
 
 export namespace DirigeraDevice {
 
-    export type Factory<T extends DirigeraDevice<CommonDeviceAttributes> = DirigeraDevice<CommonDeviceAttributes>> = {
+    export type Factory<T extends DirigeraDevice = DirigeraDevice> = {
         create: (platform: DirigeraPlatform, hub: DirigeraHub, accessory: PlatformAccessory, device: Device) => Promise<T>
     }
 }

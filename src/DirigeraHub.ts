@@ -1,10 +1,12 @@
+import os from 'os';
+import EventEmitter from 'events';
 import { Logger } from 'homebridge';
 import { createDirigeraClient, Device } from 'dirigera';
-import EventEmitter from 'events';
 import { Availability } from './Availability.js';
 import { clearTimeout } from 'timers';
 import { ContextLogger, ILogger } from './Logger.js';
-import { isNil } from './common.js';
+import { isNil, wait } from './common.js';
+import { calculateCodeChallenge, CODE_CHALLENGE_METHOD, generateCodeVerifier } from './auth.js';
 
 type DirigeraClient = Awaited<ReturnType<typeof createDirigeraClient>>;
 
@@ -17,7 +19,7 @@ export class DirigeraHub {
         if (isNil(gatewayIP)) {
             throw new Error('Invalid hub configuration. Missing [host] setting');
         }
-        const accessToken = config.token ?? await DirigeraHub.authenticate(config.host, logger);
+        const accessToken = config.token ?? await DirigeraHub.authenticate(config.host, config.name, logger);
         const client = await createDirigeraClient({
             gatewayIP: config.host,
             accessToken
@@ -29,22 +31,72 @@ export class DirigeraHub {
         return hub;
     }
 
-    private static async authenticate(ip: string, logger: Logger): Promise<string> {
-        try {
-            const c = await createDirigeraClient({ gatewayIP: ip });
-            const token = await c.authenticate();
-            logger.info(`To avoid creating new users/tokens every time Homebridge starts up, copy the following token and add it under the "token" key in the config entry for hub [${ip}]`);
-            logger.info(token);
-            return token;
-        } catch (e) {
-            throw new Error(`Failed to resolve auth token for hub [${ip}]. The link button on the hub must be pressed during start-up`)
+    private static async authenticate(ip: string, name: string | undefined,  logger: Logger, attempt = 1): Promise<string> {
+
+        const hubDesc = name ? `${name} (${ip})` : ip;
+
+        const codeVerifier = generateCodeVerifier();
+        const codeChallenge = calculateCodeChallenge(codeVerifier);
+
+        const { got } = await import('got');
+        const { code } = await got.get(`https://${ip}:8443/v1/oauth/authorize`, {
+            https: {
+                rejectUnauthorized: false
+            },
+            searchParams: {
+                audience: 'homesmart.local',
+                response_type: 'code',
+                code_challenge: codeChallenge,
+                code_challenge_method: CODE_CHALLENGE_METHOD,
+            }
+        }).json<{ code: string }>();
+
+        logger.info(`\nPress the Action Button on the bottom of your Dirigera Hub [${hubDesc}]\n`);
+        let accessToken;
+        while (!accessToken) {
+            try {
+                await wait(5000);
+                logger.debug(`authentication attempt ${attempt}`);
+                accessToken = (await got.post(`https://${ip}:8443/v1/oauth/token`, {
+                    https: {
+                        rejectUnauthorized: false
+                    },
+                    form: {
+                        code,
+                        name: os.hostname(),
+                        grant_type: 'authorization_code',
+                        code_verifier: codeVerifier,
+                    }
+                }).json<{ access_token: string }>()).access_token;
+
+                logger.info(`
+                Authentication token resolved. To avoid re-authenticating on each homebridge restart, add it to the hub configuration, e.g.:
+                {
+                    "host": "${ip}",
+                    "token": "${accessToken}",
+                    ${name ? `"name": ${name}` : '...'}
+                }`);
+
+            } catch (error) {
+                if ((<any>error).response.statusCode === 403) {
+                    if (attempt % 3 === 0) {
+                        logger.info(`\nStill waiting for that Action Button [${hubDesc}]...\n`);
+                    }
+                    attempt++;
+                    if (attempt === 12) {
+                        throw new Error(`Could not authenticate to hub [${hubDesc}]. Action button wasn't pressed.`);
+                    }
+                } else {
+                    return DirigeraHub.authenticate(ip, name, logger, attempt++);
+                }
+            }
         }
+        return accessToken;
     }
 
     readonly name: string;
     readonly config: DirigeraHub.Config;
     readonly logger: ILogger;
-    // private readonly rest: Rest;
 
     private readonly info: DirigeraHub.Info;
     private readonly client: DirigeraClient;
@@ -105,7 +157,7 @@ export class DirigeraHub {
     }
 
     async close() {
-        this.logger.info(`[hub][${this.name}] closing...`)
+        this.logger.info(`[hub][${this.name}] closing...`);
         clearTimeout(this.heartbeatTimeout);
         this.client.stopListeningForUpdates();
         this.emitter.removeAllListeners();
@@ -135,7 +187,7 @@ export class DirigeraHub {
             https: {
                 rejectUnauthorized: false
             }
-        })
+        });
         if (resp.statusCode !== 202) {
             this.logger.error(`Failed to identify device [${id}]. ${resp.statusMessage}`);
         }
@@ -171,7 +223,7 @@ export class DirigeraHub {
 
     private resetHeartbeat() {
         clearTimeout(this.heartbeatTimeout);
-        this.heartbeatTimeout = setTimeout(() => this.heartbeat(), HEARTBEAT_TIMEOUT)
+        this.heartbeatTimeout = setTimeout(() => this.heartbeat(), HEARTBEAT_TIMEOUT);
     }
 }
 
@@ -190,3 +242,4 @@ export namespace DirigeraHub {
         attributes: any
     }
 }
+

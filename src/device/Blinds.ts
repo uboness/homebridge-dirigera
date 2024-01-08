@@ -51,7 +51,6 @@ export class Blinds extends DirigeraDevice<BlindsAttributes> {
             this.service.getCharacteristic(platform.Characteristic.CurrentPosition)
                 .setValue(100 - <number>device.attributes.blindsCurrentLevel)
                 .onGet(() => 100 - <number>this.device.attributes.blindsCurrentLevel);
-
         }
     }
 

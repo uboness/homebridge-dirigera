@@ -7,6 +7,8 @@ export const isString = (value: any): value is string => !isNil(value) && typeof
 export const isBoolean = (value: any): value is boolean => !isNil(value) && typeof value === 'boolean';
 export const isNumber = (value: any): value is number => !isNil(value) && typeof value === 'number';
 
+export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const cleanMapAsync = async <K extends string = string, V = any>(map: { [key in K]: V }, cb: (key: K, val: V) => void | Promise<void>) => {
     for (let key of Object.keys(map)) {
         const val = map[key];
