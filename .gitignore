@@ -30,3 +30,5 @@ node_modules/
 
 .homebridge
 hubs.md
+.DS_Store
+.idea
