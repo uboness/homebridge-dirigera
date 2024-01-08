@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.13](https://github.com/uboness/homebridge-dirigera/compare/v0.1.12...v0.1.13) (2024-01-08)
+
+
+### Bug Fixes
+
+* **cleanup:** removed package-lock.json in favour of pnpm-lock.yaml ([ae0722a](https://github.com/uboness/homebridge-dirigera/commit/ae0722a95de5d0e6ee8e069d5779dc0415a0597b))
+
 ## [0.1.12](https://github.com/uboness/homebridge-dirigera/compare/v0.1.11...v0.1.12) (2024-01-08)
 
 
