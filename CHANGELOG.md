@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.12](https://github.com/uboness/homebridge-dirigera/compare/v0.1.11...v0.1.12) (2024-01-08)
+
+
+### Bug Fixes
+
+* **auth:** instead of prompting the user to press "Enter" (LOL), the authentication process is now attempted 12 times (5 seconds between each attempt), giving the user 1 min to press the action button on the hub. After 1 min the authentication fails and the hub will be skipped ([d51c5f0](https://github.com/uboness/homebridge-dirigera/commit/d51c5f001672135f705a8865190097449e4f2939))
+
 ## [0.1.11](https://github.com/uboness/homebridge-dirigera/compare/v0.1.10...v0.1.11) (2023-12-12)
 
 

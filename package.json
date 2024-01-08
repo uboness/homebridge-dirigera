@@ -1,6 +1,6 @@
 {
   "name": "@uboness/homebridge-dirigera",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": "uboness",
   "publishConfig": {
     "@uboness:registry": "https://registry.npmjs.org "
@@ -57,7 +57,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "commit-and-tag-version": "^12.0.0",
     "eslint": "^8.45.0",
-    "homebridge": "^1.6.0",
+    "homebridge": "1.6.1",
     "nodemon": "^2.0.22",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
