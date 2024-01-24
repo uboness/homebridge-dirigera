@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.14](https://github.com/uboness/homebridge-dirigera/compare/v0.1.13...v0.1.14) (2024-01-24)
+
+
+### Features
+
+* Added support for `ContactSensor`, `MotionSensor`, and `Outlet` ([dca60f5](https://github.com/uboness/homebridge-dirigera/commit/dca60f56d8260840d9fa6b6f33446bb05999d893))
+
 ## [0.1.13](https://github.com/uboness/homebridge-dirigera/compare/v0.1.12...v0.1.13) (2024-01-08)
 
 
