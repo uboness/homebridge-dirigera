@@ -32,3 +32,4 @@ node_modules/
 hubs.md
 .DS_Store
 .idea
+/script/

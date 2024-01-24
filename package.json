@@ -38,8 +38,10 @@
     "config.schema.json"
   ],
   "scripts": {
-    "watch": "npm run build && tsc -w",
-    "build": "rimraf ./dist && tsc",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf ./dist",
+    "cbuild": "npm run clean && npm run build",
     "prepublishOnly": "npm run build",
     "release:bump": "commit-and-tag-version",
     "release:postbump": "npm run release:push && npm run release:publish",
@@ -48,7 +50,7 @@
     "release": "npm run release:bump && npm run release:push && npm run release:publish"
   },
   "dependencies": {
-    "dirigera": "^0.11.6",
+    "dirigera": "^0.13.0",
     "got": "^13.0.0"
   },
   "devDependencies": {
