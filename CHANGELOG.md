@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.16](https://github.com/uboness/homebridge-dirigera/compare/v0.1.15...v0.1.16) (2024-03-08)
+
+
+### Features
+
+* Added support for `LeakSensor` (BADRING) ([adb0a8e](https://github.com/uboness/homebridge-dirigera/commit/adb0a8e8e733277221b61b8e8a648ecc41d8cdee))
+
 ## [0.1.15](https://github.com/uboness/homebridge-dirigera/compare/v0.1.14...v0.1.15) (2024-01-24)
 
 ## [0.1.14](https://github.com/uboness/homebridge-dirigera/compare/v0.1.13...v0.1.14) (2024-01-24)
