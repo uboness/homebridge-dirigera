@@ -23,7 +23,7 @@ export class ContactSensor extends DirigeraDevice<OpenCloseSensorAttributes> {
                 const isOpen = value as boolean;
                 this.device.attributes.isOpen = isOpen;
                 if (!context?.fromDirigera) {
-                    await hub.setDeviceAttributes(device.id, { isOpen } as OpenCloseSensorAttributes);
+                    await hub.setDeviceAttributes(device.id, { isOpen } as Partial<OpenCloseSensorAttributes>);
                 }
             });
 

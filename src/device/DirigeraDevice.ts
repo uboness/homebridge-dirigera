@@ -1,3 +1,4 @@
+import { XDevice } from '../dirigera.js';
 import { DirigeraPlatform } from '../DirigeraPlatform.js';
 import { DirigeraHub } from '../DirigeraHub.js';
 import { PlatformAccessory, Service } from 'homebridge';
@@ -10,13 +11,13 @@ export abstract class DirigeraDevice<Attrs extends CommonDeviceAttributes = Comm
     readonly platform: DirigeraPlatform;
     readonly hub: DirigeraHub;
     readonly accessory: PlatformAccessory;
-    readonly device: Device;
+    readonly device: XDevice;
     readonly service: Service;
     readonly logger: ILogger;
 
     private _available: boolean;
 
-    protected constructor(platform: DirigeraPlatform, hub: DirigeraHub, accessory: PlatformAccessory, device: Device, service: Service) {
+    protected constructor(platform: DirigeraPlatform, hub: DirigeraHub, accessory: PlatformAccessory, device: XDevice, service: Service) {
         this.platform = platform;
         this.hub = hub;
         this.accessory = accessory;

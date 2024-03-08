@@ -120,6 +120,7 @@ export class DirigeraPlatform implements DynamicPlatformPlugin {
             });
 
             hub.on('deviceStateChanged', change => {
+                console.log(`state change [${JSON.stringify(change)}]`);
                 const device = this.devices[hubId].find(device => device.id === change.id);
                 if (device) {
                     device.update(change.attributes);
